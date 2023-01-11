@@ -2,6 +2,7 @@ package igapi
 
 import (
 	"encoding/json"
+	"log"
 )
 
 type UserData struct {
@@ -62,10 +63,9 @@ type UserData struct {
 func GetUserNameInfo(username string) UserData {
 	requrl := "https://i.instagram.com/api/v1/users/web_profile_info/?username=" + username
 	data := GetRequest(requrl)
-
+	log.Println(string(data))
 	var userdata UserData
 	err := json.Unmarshal(data, &userdata)
 	chkerr(err)
-
 	return userdata
 }
