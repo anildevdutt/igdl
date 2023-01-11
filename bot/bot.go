@@ -9,7 +9,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var db *sql.DB
+var DB *sql.DB
 var dbfile = "db/igdl.db"
 
 func chkerr(e error) {
@@ -18,10 +18,11 @@ func chkerr(e error) {
 	}
 }
 
-func SaveUserData(userdata igapi.UserData) {
+func SaveUserData(username string) {
+	userdata := igapi.GetUserNameInfo(username)
 	user := userdata.Data.User
 	insert := "INSERT INTO users VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-	_, err := db.Exec(insert, user.Id, user.Username, user.Full_name, user.Biography, user.External_url,
+	_, err := DB.Exec(insert, user.Id, user.Username, user.Full_name, user.Biography, user.External_url,
 		user.Edge_followed_by.Count, user.Edge_follow.Count, user.Fbid, user.Has_clips, user.Has_channel, user.Highlight_reel_count,
 		user.Hide_like_and_view_counts, user.Is_business_account, user.Is_professional_account, user.Is_supervision_enabled,
 		user.Is_joined_recently, user.Guardian_id, user.Business_email, user.Business_phone_number, user.Business_contact_method,
@@ -29,12 +30,18 @@ func SaveUserData(userdata igapi.UserData) {
 	chkerr(err)
 }
 
-func Start() {
+func initDB() {
 	var err error
-	db, err = sql.Open("sqlite3", dbfile)
+	DB, err = sql.Open("sqlite3", dbfile)
 	chkerr(err)
+}
 
-	userdata := igapi.GetUserNameInfo("f1")
-	// log.Println(userdata)
-	SaveUserData(userdata)
+func SaveAllUserFollowers(userid string) {
+
+}
+
+func Start() {
+	initDB()
+
+	SaveUserData("f1")
 }
