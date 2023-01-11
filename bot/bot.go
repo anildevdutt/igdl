@@ -35,6 +35,6 @@ func Start() {
 	chkerr(err)
 
 	userdata := igapi.GetUserNameInfo("f1")
-	log.Println(userdata)
-	// SaveUserData(userdata)
+	// log.Println(userdata)
+	SaveUserData(userdata)
 }
